@@ -1,0 +1,25 @@
+{
+  "name": "nodecat",
+  "version": "1.0.0",
+  "description": "NodeBird 에서 데이터 긁어와서 2차로 사용하는 서비스",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "yu",
+  "license": "ISC",
+  "dependencies": {
+    "axios":"^0.27.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv":"^16.0.1",
+    "express":"^4.18.1",
+    "express-session": "1.18.1",
+    "morgan":"^1.10.0",
+    "nunjucks":"^3.2.3"
+  },
+  "devDependencies": {
+    "nodemon":"^2.0.16"
+  }
+}
