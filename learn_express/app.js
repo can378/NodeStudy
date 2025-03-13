@@ -1,5 +1,7 @@
 const dotenv=require('dotenv');//최대한 위에 쓰기 dotenv
 dotenv.config();
+const indexRouter=require('./routes');
+const userRouter=require('./routes/user');
 
 
 const { error } = require('console');
@@ -7,6 +9,10 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+//port를 3000으로 설정(전역변수 같이)
+app.set('port', process.env.PORT || 3000); 
+app.set('views',path.join(__dirname,'views'));
+app.set('view engine','png');
 
 
 const morgan=require('morgan');
@@ -14,8 +20,7 @@ const cookieParser=require('cookie-parser');
 const session=require('express-session');//개인의 저장공간생성
 //dotenv=비밀키 관리. node조절, 값들 조절절
 
-//port를 3000으로 설정(전역변수 같이)
-app.set('port', process.env.PORT || 3000); 
+
 
 app.use(morgan('dev'));//개발때 요청 이런게 찍히는용용
 //app.use('/',express.static(__dirname,'public')); //midleware순서가 성능에도 영향을 준다.
@@ -32,14 +37,18 @@ app.use(session({
 }));
 
 
+app.use('/',indexRouter);
+app.use('/user',userRouter);
+
+
 const multer=require('multer');//multer함술ㄹ 호출하면 4가지의 middleqare가 들어있다
 //upload- snigle, storage, limits
 const fs=require('fs');
 
-//midleware 호ㅘㄱ장
+//midleware 확장
 app.use('/',(req,res,next)=>{
   if(req.session.id){
-    express.static(__dirname,'./public')(req,res,next)
+    //express.static(__dirname,'./public')(req,res,next)
   }else{
     next();
   }
@@ -50,6 +59,7 @@ app.use(express.urlencoded({extended:true}));//form을 parsing해준다.
 
 app.use((req,res,next)=>{
   req.data='cookiekey';
+  next();
 })
 
 app.get('/',(req,res,next)=>{
@@ -107,7 +117,7 @@ app.post('/',(req,res)=>{
 
 //404처리 midleware
 app.use((req,res,next)=>{
-  res.statusMessage(404).send('404');
+  res.status(404).send('404');
   //해커들이 힌트얻는것을을 막기 위해서 404로 퉁치거나 200으로만 하기도함함
 });
 
@@ -116,6 +126,7 @@ app.use((req,res,next)=>{
 //err midleware는 4개여야한다.
 app.use((err,req,res,next)=>{
   console.log(err);
+  res.status(500).send('Internal Server Error');
 })
 
 app.listen(app.get('port'), () => {
