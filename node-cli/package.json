@@ -10,10 +10,11 @@
   "license": "ISC",
   "description": "",
   "bin": {
-    "cli": "./template.js"
+    "cli": "./command.js"
   },
   "dependencies": {
-    "commander": "^9.5.0",
-    "inquirer": "^8.2.6"
+    "chalk": "^3.0.0",
+    "commander": "^5.0.0",
+    "inquirer": "^7.1.0"
   }
 }
