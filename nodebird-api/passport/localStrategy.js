@@ -10,11 +10,16 @@ module.exports = () => {
     passwordField: 'password',
   }, async (email, password, done) => {
     try {
-      const exUser = await User.findOne({ where: { email } });
+      const exUser = await User.findOne({ where: { email } });//email기준으로 사용자 검색
+      
       if (exUser) {
+        //비번 일치 여부 확인
         const result = await bcrypt.compare(password, exUser.password);
+        
         if (result) {
           done(null, exUser);
+          //done = success,error,fail중에 하나 반환하고 next를 부름.
+          //
         } else {
           done(null, false, { message: '비밀번호가 일치하지 않습니다.' });
         }
@@ -25,5 +30,6 @@ module.exports = () => {
       console.error(error);
       done(error);
     }
+
   }));
 };

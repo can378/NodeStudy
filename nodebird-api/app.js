@@ -7,15 +7,15 @@ const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config();//전역 환경변수 설정 - dotenv 사용
 const v1 = require('./routes/v1');
 const v2 = require('./routes/v2');
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes');
 const { sequelize } = require('./models');
-const passportConfig = require('./passport');
+const passportConfig = require('./passport');//passport폴더의 index.js파일이 로드.
 
-const app = express();
+const app = express();//express framework로 새로운 웹 애플 생성
 passportConfig();
 app.set('port', process.env.PORT || 8002);
 app.set('view engine', 'html');
